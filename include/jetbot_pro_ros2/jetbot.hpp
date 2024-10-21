@@ -56,7 +56,7 @@ namespace jetbot_pro
         // io_service iosev;
         struct sp_port *sp;         //Define the serial port for transmission
 
-        std::string port_name;
+        std::string serial_port;
         int baud_rate;
         bool publish_odom_transform;
         double linear_correction;

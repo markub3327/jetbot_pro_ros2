@@ -7,7 +7,7 @@ using namespace jetbot_pro;
 JetBot::JetBot() : Node("jetbot")
 {
     /*Get robot parameters from configuration file*/
-    port_name = this->declare_parameter("port_name", std::string("/dev/ttyACM0"));
+    serial_port = this->declare_parameter("serial_port", std::string("/dev/ttyACM0"));
     baud_rate = this->declare_parameter("baud_rate", 115200);
 
     linear_correction = this->declare_parameter("linear_correction", 1.0);
@@ -15,7 +15,7 @@ JetBot::JetBot() : Node("jetbot")
     publish_odom_transform = this->declare_parameter("publish_odom_transform", true);
 
     //set serial port
-    check(sp_get_port_by_name(port_name.c_str(), &sp));
+    check(sp_get_port_by_name(serial_port.c_str(), &sp));
     check(sp_open(sp, SP_MODE_READ_WRITE));
     check(sp_set_baudrate(sp, baud_rate));
     check(sp_set_bits(sp, 8));
@@ -91,7 +91,7 @@ void JetBot::serial_task()
 
     double  imu_list[9];
     double  odom_list[6];
-    rclcpp::Time now_time,last_time;
+    rclcpp::Time now_time, last_time;
     tf2::Quaternion tf2_quat;
 
     //Create Publisher message
@@ -175,6 +175,9 @@ void JetBot::serial_task()
             case State_Handle:         //processing frame data
                 now_time = this->get_clock()->now();
 
+                std::cout << "Last time type: " << last_time.get_clock_type() << std::endl;
+                std::cout << "Now time type: " << now_time.get_clock_type() << std::endl;
+
                 //gyro
                 imu_list[0]=((double)((int16_t)(data[4]*256+data[5]))/32768*2000/180*M_PI);
                 imu_list[1]=((double)((int16_t)(data[6]*256+data[7]))/32768*2000/180*M_PI);
@@ -189,7 +192,7 @@ void JetBot::serial_task()
                 imu_list[8]=((double)((int16_t)(data[20]*256+data[21]))/10.0);
 
                 //publish the IMU message
-                imu_msgs.header.stamp = this->get_clock()->now();
+                imu_msgs.header.stamp = now_time;
                 imu_msgs.header.frame_id = "base_imu_link";
                 imu_msgs.angular_velocity.x = imu_list[0];
                 imu_msgs.angular_velocity.y = imu_list[1];
@@ -309,7 +312,6 @@ void JetBot::SetPID(int p,int i, int d)
     tmp[10] = checksum(tmp,10);
 
     /* Send data. */
-    printf("Sending '%s' (%d bytes) on port %s.\n", tmp, 11, sp_get_port_name(sp));
     auto result = check(sp_blocking_write(sp, tmp, 11, sp_timeout));
     /* Check whether we sent all of the data. */
     if (result >= 0 && result != 11)
@@ -331,10 +333,9 @@ void JetBot::SetParams(double linear_correction,double angular_correction)
     tmp[8]  = checksum(tmp,8);
 
     /* Send data. */
-    printf("Sending '%s' (%d bytes) on port %s.\n", tmp, 9, sp_get_port_name(sp));
     auto result = check(sp_blocking_write(sp, tmp, 9, sp_timeout));
     /* Check whether we sent all of the data. */
-    if (result >= 0 && result != 11)
+    if (result >= 0 && result != 9)
         RCLCPP_WARN(this->get_logger(), "Serial: Timed out.");
 }
 
@@ -355,7 +356,6 @@ void JetBot::SetVelocity(double x, double y, double yaw)
     tmp[10] = checksum(tmp,10);
 
     /* Send data. */
-    printf("Sending '%s' (%d bytes) on port %s.\n", tmp, 11, sp_get_port_name(sp));
     auto result = check(sp_blocking_write(sp, tmp, 11, sp_timeout));
     /* Check whether we sent all of the data. */
     if (result >= 0 && result != 11)
