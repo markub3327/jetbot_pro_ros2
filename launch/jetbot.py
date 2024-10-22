@@ -47,7 +47,7 @@ def generate_launch_description():
             name='rplidar_node',
             parameters=[{'channel_type': 'serial',
                          'serial_port': "/dev/ttyACM1",
-                         'serial_baudrate': '115200',
+                         'serial_baudrate': 115200,
                          'frame_id': "/laser_frame",
                          'inverted': 'false',
                          'angle_compensate': 'true'}],
