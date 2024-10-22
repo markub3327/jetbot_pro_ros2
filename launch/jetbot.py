@@ -49,8 +49,8 @@ def generate_launch_description():
                          'serial_port': "/dev/ttyACM1",
                          'serial_baudrate': 115200,
                          'frame_id': "/laser_frame",
-                         'inverted': 'false',
-                         'angle_compensate': 'true'}],
+                         'inverted': False,
+                         'angle_compensate': True}],
             output='screen',
         ),
         Node(
