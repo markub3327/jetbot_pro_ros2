@@ -30,7 +30,7 @@ def generate_launch_description():
             parameters=[
                 {"camera_name": "csi_cam_0"},
                 {"camera_info_url": "package://jetbot_pro_ros2/config/camera_calibration/cam_640x480.yaml"},
-                {"gscam_config": "nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM), width=(int)640, height=(int)480, format=(string)NV12, framerate=(fraction)20/1 ! nvvidconv flip-method=0 ! videoconvert"},
+                {"gscam_config": "nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM), width=(int)640, height=(int)480, format=(string)NV12, framerate=(fraction)20/1 ! nvvidconv jpegenc flip-method=0 ! videoconvert"},
                 {"frame_id": "/csi_cam_0_link"},
                 {"sync_sink": False},
                 
