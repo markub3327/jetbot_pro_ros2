@@ -33,6 +33,7 @@ def generate_launch_description():
                 {"gscam_config": "nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM), width=(int)640, height=(int)480, format=(string)NV12, framerate=(fraction)20/1 ! nvvidconv jpegenc flip-method=0 ! videoconvert"},
                 {"frame_id": "/csi_cam_0_link"},
                 {"sync_sink": False},
+                {"image_encoding": "jpeg"}
                 
             ],
             remappings=[
