@@ -34,10 +34,6 @@ def generate_launch_description():
                 {"frame_id": "/csi_cam_0_link"},
                 {"sync_sink": False},               
             ],
-            remappings=[
-                ("/camera/image_raw", "/csi_cam_0/image_raw"),
-                ("/set_camera_info", "/csi_cam_0/set_camera_info")
-            ],
             output='screen',
         ),
         Node(
