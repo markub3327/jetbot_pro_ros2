@@ -45,20 +45,6 @@ def generate_launch_description():
             package='rplidar_ros',
             node_executable='rplidar_node',
             name='rplidar_node',
-            parameters=[
-                {"serial_port": },
-                {"serial_baudrate": 256000},    # 115200 for A1/A2, 256000 for A3
-                {"frame_id": },
-                {"inverted": False},
-                {"angle_compensate": True},
-            ],
-            output='screen',
-        ),
-        
-        Node(
-            package='rplidar_ros',
-            executable='rplidar_node',
-            name='rplidar_node',
             parameters=[{'channel_type': 'serial',
                          'serial_port': "/dev/ttyACM1",
                          'serial_baudrate': '115200',
