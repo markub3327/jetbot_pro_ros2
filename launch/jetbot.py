@@ -15,7 +15,8 @@ def generate_launch_description():
             ],
             remappings=[
                 ("/odom", "/odom_raw")
-            ]
+            ],
+            output='screen',
         ),
         Node(
             package='jetbot_pro_ros2',
@@ -37,19 +38,34 @@ def generate_launch_description():
             remappings=[
                 ("/camera/image_raw", "/csi_cam_0/image_raw"),
                 ("/set_camera_info", "/csi_cam_0/set_camera_info")
-            ]
+            ],
+            output='screen',
         ),
         Node(
             package='rplidar_ros',
             node_executable='rplidar_node',
             name='rplidar_node',
             parameters=[
-                {"serial_port": "/dev/ttyACM1"},
-                {"serial_baudrate": 115200},    # 115200 for A1/A2, 256000 for A3
-                {"frame_id": "/laser_frame"},
+                {"serial_port": },
+                {"serial_baudrate": 256000},    # 115200 for A1/A2, 256000 for A3
+                {"frame_id": },
                 {"inverted": False},
                 {"angle_compensate": True},
             ],
+            output='screen',
+        ),
+        
+        Node(
+            package='rplidar_ros',
+            executable='rplidar_node',
+            name='rplidar_node',
+            parameters=[{'channel_type': 'serial',
+                         'serial_port': "/dev/ttyACM1",
+                         'serial_baudrate': '115200',
+                         'frame_id': "/laser_frame",
+                         'inverted': 'false',
+                         'angle_compensate': 'true'}],
+            output='screen',
         ),
         Node(
             package='tf2_ros',
