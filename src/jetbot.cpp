@@ -175,9 +175,6 @@ void JetBot::serial_task()
             case State_Handle:         //processing frame data
                 now_time = this->get_clock()->now();
 
-                std::cout << "Last time type: " << last_time.get_clock_type() << std::endl;
-                std::cout << "Now time type: " << now_time.get_clock_type() << std::endl;
-
                 //gyro
                 imu_list[0]=((double)((int16_t)(data[4]*256+data[5]))/32768*2000/180*M_PI);
                 imu_list[1]=((double)((int16_t)(data[6]*256+data[7]))/32768*2000/180*M_PI);
@@ -220,7 +217,6 @@ void JetBot::serial_task()
                 odom_trans.header.stamp = now_time;
                 odom_trans.header.frame_id = "odom";
                 odom_trans.child_frame_id = "base_footprint";
-
                 odom_trans.transform.translation.x = odom_list[0];
                 odom_trans.transform.translation.y = odom_list[1];
                 odom_trans.transform.translation.z = 0.0;
