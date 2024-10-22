@@ -62,7 +62,13 @@ def generate_launch_description():
             node_executable='static_transform_publisher',
             name='base_link_to_laser',
             arguments=["0", "0", "0.15", "3.14", "0", "0", "/base_footprint", "/laser_frame"]
-        )
+        ),
+        Node(
+            package='tf2_ros',
+            node_executable='static_transform_publisher',
+            name='base_footprint_to_imu',
+            arguments=["0", "0", "0.07", "0", "0", "0", "/base_footprint", "/csi_cam_0_link"]
+        ),
     ])
 
 '''
