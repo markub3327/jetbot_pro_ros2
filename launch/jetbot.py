@@ -31,7 +31,7 @@ def generate_launch_description():
                 {"debug": False},
                 {"map_frame": "map"},
                 {"odom_frame": "odom"},
-                {"base_link_frame": "base_link"},  
+                {"base_link_frame": "base_link"},
                 {"world_frame": "odom"},
                 {"publish_tf": True},
                 {"use_control": False},
