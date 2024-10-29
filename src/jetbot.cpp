@@ -106,12 +106,12 @@ void JetBot::serial_task()
 
     //Create Publisher
     tf2_ros::TransformBroadcaster odom_broadcaster(this);
-    auto imu_pub = this->create_publisher<sensor_msgs::msg::Imu>("imu",10);
-    auto odom_pub = this->create_publisher<nav_msgs::msg::Odometry>("odom", 10);
-    auto lvel_pub = this->create_publisher<std_msgs::msg::Int32>("motor/lvel",10);
-    auto rvel_pub = this->create_publisher<std_msgs::msg::Int32>("motor/rvel",10);
-    auto lset_pub = this->create_publisher<std_msgs::msg::Int32>("motor/lset",10);
-    auto rset_pub = this->create_publisher<std_msgs::msg::Int32>("motor/rset",10);
+    auto imu_pub = this->create_publisher<sensor_msgs::msg::Imu>("/imu/data",10);
+    auto odom_pub = this->create_publisher<nav_msgs::msg::Odometry>("/wheel/odometry", 10);
+    auto lvel_pub = this->create_publisher<std_msgs::msg::Int32>("/motor/lvel",10);
+    auto rvel_pub = this->create_publisher<std_msgs::msg::Int32>("/motor/rvel",10);
+    auto lset_pub = this->create_publisher<std_msgs::msg::Int32>("/motor/lset",10);
+    auto rset_pub = this->create_publisher<std_msgs::msg::Int32>("/motor/rset",10);
 
     RCLCPP_INFO(this->get_logger(), "start receive message");
     while(true)

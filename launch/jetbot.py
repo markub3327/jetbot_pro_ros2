@@ -13,15 +13,79 @@ def generate_launch_description():
                 {"angular_correction": 1.0},
                 {"publish_odom_transform": False},
             ],
-            remappings=[
-                ("/odom", "/odom_raw")
-            ],
             output='screen',
         ),
         Node(
-            package='jetbot_pro_ros2',
-            node_executable='odom_ekf',
-            name='odom_ekf_node',
+            package='robot_localization',
+            executable='ekf_node',
+            name='ekf_filter_node',
+            output='screen',
+            parameters=[
+                # Configuation for robot odometry EKF
+                {"frequency": 30.0},
+                {"sensor_timeout": 0.1},
+                {"two_d_mode": True},
+                {"transform_time_offset": 0.0},
+                {"transform_timeout": 0.0},
+                {"print_diagnostics": True},
+                {"debug": False},
+                {"map_frame": "map"},
+                {"odom_frame": "odom"},
+                {"base_link_frame": "base_link"},  
+                {"world_frame": "odom"},
+                {"publish_tf": True},
+                {"use_control": False},
+    
+                {"process_noise_covariance": [0.05, 0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                              0,    0.05, 0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                              0,    0,    0.06, 0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                              0,    0,    0,    0.03, 0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                              0,    0,    0,    0,    0.03, 0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                              0,    0,    0,    0,    0,    0.06, 0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                              0,    0,    0,    0,    0,    0,    0.025, 0,     0,    0,    0,    0,    0,    0,    0,
+                                              0,    0,    0,    0,    0,    0,    0,     0.025, 0,    0,    0,    0,    0,    0,    0,
+                                              0,    0,    0,    0,    0,    0,    0,     0,     0.04, 0,    0,    0,    0,    0,    0,
+                                              0,    0,    0,    0,    0,    0,    0,     0,     0,    0.01, 0,    0,    0,    0,    0,
+                                              0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0.01, 0,    0,    0,    0,
+                                              0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0.02, 0,    0,    0,
+                                              0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0.01, 0,    0,
+                                              0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0.01, 0,
+                                              0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0.015]},
+
+
+                {"initial_estimate_covariance": [1e-9, 0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                      0,    1e-9, 0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                      0,    0,    1e-9, 0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                      0,    0,    0,    1e-9, 0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                      0,    0,    0,    0,    1e-9, 0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                      0,    0,    0,    0,    0,    1e-9, 0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                      0,    0,    0,    0,    0,    0,    1e-9, 0,    0,    0,     0,     0,     0,    0,    0,
+                                                      0,    0,    0,    0,    0,    0,    0,    1e-9, 0,    0,     0,     0,     0,    0,    0,
+                                                      0,    0,    0,    0,    0,    0,    0,    0,    1e-9, 0,     0,     0,     0,    0,    0,
+                                                      0,    0,    0,    0,    0,    0,    0,    0,    0,    1e-9,  0,     0,     0,    0,    0,
+                                                      0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     1e-9,  0,     0,    0,    0,
+                                                      0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     1e-9,  0,    0,    0,
+                                                      0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     1e-9, 0,    0,
+                                                      0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    1e-9, 0,
+                                                      0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    1e-9]},
+    
+                # Configuration for odometry sensors
+                {"odom0": "/wheel/odometry"},
+                {"odom0_config": [False, False, False, False, False, False, True, True, True, False, False, False, False, False, False]},
+                {"odom0_queue_size": 10},
+                {"odom0_nodelay": True},
+                {"odom0_differential": False},
+                {"odom0_relative": False},
+                
+                # Configuration for IMU sensors
+                {"imu0": "/imu/data"},
+                {"imu0_config": [False, False, False, True, True, False, False, False, False, True, True, True, True, True, True]},
+                {"imu0_nodelay": False},
+                {"imu0_differential": False},
+                {"imu0_relative": False},
+                {"imu0_queue_size": 10},
+                {"imu0_remove_gravitational_acceleration": True},
+            ]
         ),
         Node(
             package='gscam',
@@ -52,19 +116,19 @@ def generate_launch_description():
             package='tf2_ros',
             node_executable='static_transform_publisher',
             name='base_footprint_to_imu',
-            arguments=["0", "0", "0.07", "0", "0", "0", "/base_footprint", "/base_imu_link"]
+            arguments=["0", "0", "0.07", "0", "0", "0", "/base_link", "/base_imu_link"]
         ),
         Node(
             package='tf2_ros',
             node_executable='static_transform_publisher',
             name='base_link_to_laser',
-            arguments=["0", "0", "0.15", "3.14", "0", "0", "/base_footprint", "/laser_frame"]
+            arguments=["0", "0", "0.15", "3.14", "0", "0", "/base_link", "/laser_frame"]
         ),
         Node(
             package='tf2_ros',
             node_executable='static_transform_publisher',
             name='base_footprint_to_imu',
-            arguments=["0", "0", "0.07", "0", "0", "0", "/base_footprint", "/csi_cam_0_link"]
+            arguments=["0", "0", "0.07", "0", "0", "0", "/base_link", "/csi_cam_0_link"]
         ),
     ])
 

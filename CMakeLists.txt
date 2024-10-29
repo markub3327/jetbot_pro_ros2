@@ -27,14 +27,10 @@ find_package(std_msgs REQUIRED)
 
 add_executable(jetbot src/jetbot.cpp)
 add_executable(teleop_joy src/teleop_joy.cpp)
-add_executable(odom_ekf src/odom_ekf.cpp)
 target_include_directories(jetbot PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 target_include_directories(teleop_joy PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
-target_include_directories(odom_ekf PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 target_link_libraries(jetbot serialport)
@@ -54,17 +50,10 @@ ament_target_dependencies(
   "sensor_msgs"
   "geometry_msgs"
 )
-ament_target_dependencies(
-  odom_ekf
-  "rclcpp"
-  "nav_msgs"
-  "geometry_msgs"
-)
 
 install(TARGETS
   jetbot
   teleop_joy
-  odom_ekf
   DESTINATION "lib/${PROJECT_NAME}/"
 )
 
